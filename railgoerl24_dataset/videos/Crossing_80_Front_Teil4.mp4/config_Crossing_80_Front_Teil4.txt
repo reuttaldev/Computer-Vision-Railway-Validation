@@ -1,0 +1,16 @@
+config: cutVideo
+
+date: 2024-05-14
+
+processing time: 12763.3
+
+parameters:
+  - videoFile: X:\XRAISE\DATA\Aufnahme_TUEV_Elchingen\vids\Calibration1\Crossing_80_Front_Teil4.mp4
+  - targetFolder: X:\XRAISE\DATA\Aufnahme_TUEV_Elchingen\imgs\\Crossing_80_Front_Teil4.mp4\\
+  - maxImages: inf
+  - frameSkip: 15
+  - captureDate: 2024-04-25
+  - targetApp: XRAISE
+  - flipCode: None
+  - format: .jpg
+  - leadingZeros: 8

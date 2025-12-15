@@ -53,3 +53,5 @@ This gives  one GT box:
 (xmin, ymin, xmax, ymax)
 YOLO gives :
 (x1, y1, x2, y2, confidence)
+
+The database annotates humans only, so detection of anything else in YOLO (train,truck,car) are ignored.

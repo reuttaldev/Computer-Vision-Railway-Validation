@@ -1,0 +1,16 @@
+config: cutVideo
+
+date: 2024-05-15
+
+processing time: 48060.4
+
+parameters:
+  - videoFile: X:\XRAISE\DATA\Aufnahme_TUEV_Elchingen\vids\Calibration1\Fuzzy-KinderMenschengruppe2.mp4
+  - targetFolder: X:\XRAISE\DATA\Aufnahme_TUEV_Elchingen\imgs\\Fuzzy-KinderMenschengruppe2.mp4\\
+  - maxImages: inf
+  - frameSkip: 15
+  - captureDate: 2024-04-25
+  - targetApp: XRAISE
+  - flipCode: None
+  - format: .jpg
+  - leadingZeros: 8

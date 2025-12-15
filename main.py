@@ -1,5 +1,5 @@
 
-from object_detection import ObjectDetector
+from object_detection import PersonDetector
 import cv2
 from pathlib import Path
 from label_parsing import save_predictions_json
@@ -22,7 +22,8 @@ def run_sequence(detector,sequence_dir,show = True):
     for img_path in image_paths:
         frame = cv2.imread(str(img_path))
         predictions = detector.detect(frame)
-        save_predictions_json(PRED_DIR,sequence_dir,img_path,frame,predictions) 
+        if predictions:
+            save_predictions_json(PRED_DIR,sequence_dir,img_path,frame,predictions) 
 
         # Filter persons
         persons = [
@@ -57,7 +58,7 @@ def run_sequence(detector,sequence_dir,show = True):
 
 
 if __name__ == "__main__":
-    detector = ObjectDetector()
+    detector = PersonDetector()
     seq_dirs = sorted([p for p in DATA_DIR.iterdir() if p.is_dir()] )
     for seq_idx, seq_dir in enumerate(seq_dirs, start=1):
         r = run_sequence(detector,seq_dir,False)

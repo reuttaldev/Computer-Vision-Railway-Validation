@@ -1,0 +1,1 @@
+captureDate_targetApp_videoName_frameNumber.formatcaptureDate:  YYYY-MM-DDtargetApp: application, cam system, etc.videoName: name of the source videoframeNumber: frame number of imageformat: recommended either jpg or png

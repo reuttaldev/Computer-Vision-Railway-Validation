@@ -1,6 +1,6 @@
 from ultralytics import YOLO
 
-class ObjectDetector:
+class PersonDetector:
     def __init__(self, conf=0.3, imgsz=960):
         self.model = YOLO("yolov8s.pt")
         self.conf = conf #confidence threshold
@@ -15,6 +15,8 @@ class ObjectDetector:
             for box in frame_result.boxes:
                 cls_id = int(box.cls[0])
                 label = self.model.names[cls_id]
+                if label != "person":
+                    continue
                 confidence = float(box.conf[0])
 
                 x1, y1, x2, y2 = map(int, box.xyxy[0])

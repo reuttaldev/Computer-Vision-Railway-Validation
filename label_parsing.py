@@ -5,17 +5,15 @@ def save_predictions_json(out_root, video_folder, image_path, frame, predictions
     out_dir = out_root / video_folder.name
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    data = {
-        "image": image_path.name,
-        "width": int(frame.shape[1]),
-        "height": int(frame.shape[0]),
-        "predictions": predictions
-    }
-
     out_path = out_dir / f"{image_path.stem}.json"
-    out_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
+    out_path.write_text(json.dumps(predictions, indent=2), encoding="utf-8")
 
-
+def load_predictions(json_path):
+    if not json_path.exists():
+        return []
+    with open(json_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+    
 def iou(boxA, boxB):
     xA = max(boxA[0], boxB[0])
     yA = max(boxA[1], boxB[1])
@@ -29,29 +27,27 @@ def iou(boxA, boxB):
     return inter / (areaA + areaB - inter + 1e-6)
 
 # match Railgoerl24 original annotations to the model's predictions
-def match_predictions(gt_boxes, preds, iou_thr=0.5):
-    matched_gt = set()
-    matched_pred = set()
+def match(gt_boxes, preds, iou_thr=0.5):
+    matched_preds = set()
+    tp = 0
 
-    for gi, gt in enumerate(gt_boxes):
+    for gt in gt_boxes:
         best_iou = 0
-        best_pi = -1
+        best_idx = -1
 
-        for pi, p in enumerate(preds):
-            if pi in matched_pred:
+        for i, p in enumerate(preds):
+            if i in matched_preds:
                 continue
-
-            i = iou(gt["bbox"], p["bbox"])
-            if i > best_iou:
-                best_iou = i
-                best_pi = pi
+            score = iou(gt, p["bbox"])
+            if score > best_iou:
+                best_iou = score
+                best_idx = i
 
         if best_iou >= iou_thr:
-            matched_gt.add(gi)
-            matched_pred.add(best_pi)
+            tp += 1
+            matched_preds.add(best_idx)
 
-    tp = len(matched_gt)
     fn = len(gt_boxes) - tp
-    fp = len(preds) - len(matched_pred)
+    fp = len(preds) - len(matched_preds)
 
     return tp, fp, fn
