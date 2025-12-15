@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+	<folder></folder>
+	<filename>2024-04-25_XRAISE_Person-Liegend_laengs_00001110.jpg</filename>
+	<path></path>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<everythingAnnotated>partial</everythingAnnotated>
+	<creation_date>2024-05-16</creation_date>
+	<unsure_objects>
+		<classes>
+			<name>bicycle</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>1</level>
+		<Nets>PBCMBTTnet-i5-0s</Nets>
+		<bndbox>
+			<xmin>972</xmin>
+			<ymin>227</ymin>
+			<xmax>992</xmax>
+			<ymax>255</ymax>
+		</bndbox>
+	</unsure_objects>
+</annotation>

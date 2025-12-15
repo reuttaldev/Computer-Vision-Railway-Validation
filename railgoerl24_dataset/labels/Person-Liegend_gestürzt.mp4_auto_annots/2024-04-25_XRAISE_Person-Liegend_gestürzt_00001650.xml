@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+	<folder></folder>
+	<filename>2024-04-25_XRAISE_Person-Liegend_gestürzt_00001650.jpg</filename>
+	<path></path>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<everythingAnnotated>partial</everythingAnnotated>
+	<creation_date>2024-05-16</creation_date>
+	<object>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>2</level>
+		<Nets>FcaNet-i5-4s_PBCMBTTnet-i5-0s</Nets>
+		<bndbox>
+			<xmin>1170</xmin>
+			<ymin>216</ymin>
+			<xmax>1186</xmax>
+			<ymax>257</ymax>
+		</bndbox>
+	</object>
+	<unsure_objects>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>1</level>
+		<Nets>FcaNet-i5-4s</Nets>
+		<bndbox>
+			<xmin>1133</xmin>
+			<ymin>202</ymin>
+			<xmax>1144</xmax>
+			<ymax>235</ymax>
+		</bndbox>
+	</unsure_objects>
+</annotation>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+	<folder></folder>
+	<filename>2024-04-25_XRAISE_Crossing_10m_00000930.jpg</filename>
+	<path></path>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<everythingAnnotated>partial</everythingAnnotated>
+	<creation_date>2024-05-16</creation_date>
+	<object>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>4</level>
+		<Nets>FcaNet-i5-4s_PBCMBTTnet-i5-0s_YOLOv5l_PeriPerzNet-i5-0m</Nets>
+		<bndbox>
+			<xmin>1792</xmin>
+			<ymin>337</ymin>
+			<xmax>1883</xmax>
+			<ymax>559</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>4</level>
+		<Nets>FcaNet-i5-4s_PBCMBTTnet-i5-0s_YOLOv5l_PeriPerzNet-i5-0m</Nets>
+		<bndbox>
+			<xmin>0</xmin>
+			<ymin>241</ymin>
+			<xmax>50</xmax>
+			<ymax>394</ymax>
+		</bndbox>
+	</object>
+</annotation>

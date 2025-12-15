@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotation>
+	<folder></folder>
+	<filename>2024-04-25_XRAISE_Crossing_80_Front_Teil1_00002040.jpg</filename>
+	<path></path>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<everythingAnnotated>partial</everythingAnnotated>
+	<creation_date>2024-05-16</creation_date>
+	<object>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>2</level>
+		<Nets>FcaNet-i5-4s_PBCMBTTnet-i5-0s</Nets>
+		<bndbox>
+			<xmin>0</xmin>
+			<ymin>226</ymin>
+			<xmax>51</xmax>
+			<ymax>388</ymax>
+		</bndbox>
+	</object>
+	<unsure_objects>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<difficult>0</difficult>
+		<autoAnnotated>1</autoAnnotated>
+		<level>1</level>
+		<Nets>YOLOv5l</Nets>
+		<bndbox>
+			<xmin>0</xmin>
+			<ymin>228</ymin>
+			<xmax>89</xmax>
+			<ymax>511</ymax>
+		</bndbox>
+	</unsure_objects>
+</annotation>
