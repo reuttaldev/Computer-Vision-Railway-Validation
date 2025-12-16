@@ -62,6 +62,5 @@ if __name__ == "__main__":
     for seq_idx, seq_dir in enumerate(seq_dirs, start=1):
         r = run_sequence(detector,seq_dir,True)
     cv2.destroyAllWindows()
-    validator = Validator()
-    validator.validate(LABELS_DIR, PRED_DIR)
-    validator.print()
+    validator = Validator(LABELS_DIR, PRED_DIR)
+    validator.plot([0,0.3,0.5])

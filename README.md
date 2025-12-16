@@ -62,7 +62,6 @@ What I did as a validation engineer on this project:
 - Prediction validation: evaluates how well the AI model performs using quantitative metrics:
   - Precision / Recall  
   - F1-Score  
-  - mAP (mean Average Precision)  
   - IoU (Intersection over Union)  
   - False Positive / False Negative rates  
 
@@ -76,55 +75,73 @@ What I did as a validation engineer on this project:
 
 ## Results
 
-**Confidence threshold: 0.5**
+The following results are reported at a **confidence threshold of 0.0**.
 
-- **Precision**: 0.9141839985009449  
-- **Recall**: 0.4835480673934349  
-- **F1**: 0.6325273865961015  
-- **mAP@0.5**: 0.4764182959005285  
-- **Mean IoU**: 0.8642464808563475  
-- **FP rate**: 0.08581600149896142  
-- **FN rate**: 0.5164519326065156  
+- **Precision**: 0.9119794903666165  
+- **Recall**: 0.4771757245640227  
+- **F1-score**: 0.626531101942674  
+- **Mean IoU**: 0.8623903129414033  
+- **FP rate**: 0.08802050963330578  
+- **FN rate**: 0.5228242754359367  
 
 ### Interpretation
 
-- **Precision**: When YOLO says “person”, it is right ~91% of the time.
-- **Recall**: YOLO finds only ~48% of the actual people in the annotated frames.
-- **mAP@0.5**: Across all confidence thresholds, the model ranks correct detections only moderately well.
-- **Mean IoU**: When YOLO does detect a person, the bounding box is very accurate.
+- **Precision**: When the model predicts “person”, it is correct approximately 91% of the time.
+- **Recall**: The model detects about 48% of the actual persons present in the annotated frames.
+- **Mean IoU**: When a person is detected, the predicted bounding box is spatially accurate.
 
 #### False Positive Rate (FP)
 
-- **FP rate ≈ 0.086 (low)**
-- Only ~8.6% of predicted persons are wrong
-- Confirms high precision
-- Model is not “hallucinating”
+- **FP rate ≈ 0.088 (low)**
+- Only ~8.8% of predicted persons are incorrect
+- Indicates high precision
+- The model is not hallucinating detections
 
 #### False Negative Rate (FN)
 
 - **FN rate ≈ 0.52 (high)**
-- YOLO misses ~52% of real persons
-- This is the biggest problem
-- Explains low recall
+- The model misses approximately 52% of real persons
+- This is the main limitation of the current implementation
+- Explains the low recall
 
-### Threshold Analysis
+### Confidence Threshold Analysis
 
 The confidence threshold directly affects the tradeoff between precision and recall.  
 Lower thresholds increase recall but also increase false positives, while higher thresholds improve precision at the cost of missing real persons.
 
-To analyze this tradeoff, I evaluated the model across multiple confidence thresholds and plotted precision, recall, and false negative rate as a function of the threshold.
+To analyze this tradeoff, I evaluated the model across multiple confidence thresholds and measured precision, recall, F1-score, and error rates.
 
-**Confidence threshold: 0.3**
+#### Confidence threshold: **0.0**
+- **Precision**: 0.9119794903666165  
+- **Recall**: 0.4771757245640227  
+- **F1**: 0.626531101942674  
+- **Mean IoU**: 0.8623903129414033  
+- **FP rate**: 0.08802050963330578  
+- **FN rate**: 0.5228242754359367  
 
-Precision: 0.937072715972581
-Recall: 0.49030527214338887
-F1: 0.6437701807460783
-mAP@0.5: 0.48416291632680253
-Mean IoU: 0.8496711993545345
-FP rate: 0.06292728402734128
-FN rate: 0.5096947278565704
+#### Confidence threshold: **0.3**
+- **Precision**: 0.9119794903666165  
+- **Recall**: 0.4771757245640227  
+- **F1**: 0.626531101942674  
+- **Mean IoU**: 0.8623903129414033  
+- **FP rate**: 0.08802050963330578  
+- **FN rate**: 0.5228242754359367  
 
-**Confidence threshold: 0.15**
+At thresholds 0.0 and 0.3, the metrics remain unchanged, indicating that most predictions already have confidence scores above 0.3. Lowering the threshold further does not introduce additional detections, and therefore TP, FP, and FN counts remain stable.
 
-In this implementation, the model is considered to perform very poorly since missing people near railway tracks is dangerous and can be deadly. Therefore, high recall is more important than high precision.  
+#### Confidence threshold: **0.5**
+- **Precision**: 0.9780124088384697  
+- **Recall**: 0.36522905572942704  
+- **F1**: 0.5318456252699435  
+- **Mean IoU**: 0.8903365988169534  
+- **FP rate**: 0.021987591161421356  
+- **FN rate**: 0.6347709442705323  
+
+At a higher threshold, precision improves significantly due to the removal of low-confidence detections. However, recall drops substantially, meaning more real persons are missed. This results in a lower F1-score, as the loss in recall outweighs the gain in precision.
+
+The following figure illustrates **Precision, Recall, and F1-score as a function of the confidence threshold**, highlighting this tradeoff:
+
+![Precision / Recall / F1 vs Threshold](images/threshold.png)
+
+In this implementation, the model is considered to perform poorly for a safety-critical railway application, since missing people near railway tracks is dangerous and can be deadly. Therefore, high recall is more important than high precision.  
 Better results could be achieved by fine-tuning the model using the dataset.

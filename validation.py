@@ -1,15 +1,15 @@
 from label_parsing import load_prediction,load_label
 import matplotlib.pyplot as plt
+from pathlib import Path
 
 class Validator:
-    def __init__(self, iou_thr=0.5):
-        self.tp = 0
-        self.fp = 0
-        self.fn = 0
-
+    def __init__(self, root_labels_dir, root_pred_dir, iou_thr=0.5, conf_thr = 0.5):
+        # decides whether a prediction can be considered a TP candidate
         self.iou_thr = iou_thr
-        self.ious = [] 
-        self.confidence_matches = [] 
+        # decides whether a prediction is trusted / counted
+        self.conf_thr = conf_thr 
+        self.root_labels_dir = root_labels_dir
+        self.root_pred_dir = root_pred_dir
 
     # match Railgoerl24 original annotations to the model's predictions 
     def match(self, label, pred):
@@ -32,27 +32,28 @@ class Validator:
                     max_iou_index = i
 
             # decide if the best score is good enough to be considered a tp
-            if max_iou >= self.iou_thr and max_iou_index != -1:
+            # and if we are sure enough of the prediction
+            if max_iou >= self.iou_thr and max_iou_index != -1 and pred[max_iou_index]["confidence"] >= self.conf_thr:
                 self.tp += 1
                 matched_preds.add(max_iou_index)
                 self.ious.append(max_iou)
-                self.confidence_matches.append(
-                    (pred[max_iou_index]["confidence"], True)
-                )
             else:  # meaning the model did not detect a person even when the label showed it there
                 self.fn += 1
 
         # prediction that was not matched to a label is fp
         for i, p in enumerate(pred):   
-            if i not in matched_preds:
+            if i not in matched_preds and p["confidence"] >= self.conf_thr:
                 self.fp += 1
-                self.confidence_matches.append(
-                    (p["confidence"], False)
-                )
+    def reset(self):
+        self.tp = 0
+        self.fp = 0
+        self.fn = 0
+        self.ious = []
 
-    def validate(self, root_labels_dir, root_pred_dir):
-        for pred_dir in root_pred_dir.iterdir():
-            label_dir = root_labels_dir / f"{pred_dir.name}_auto_annots"
+    def validate(self):
+        self.reset()
+        for pred_dir in self.root_pred_dir.iterdir():
+            label_dir = self.root_labels_dir / f"{pred_dir.name}_auto_annots"
             if not label_dir.exists():
                 print(f"No labels for {pred_dir.name}")
                 continue
@@ -95,38 +96,37 @@ class Validator:
 
     def false_negative_rate(self):
         return self.fn / (self.tp + self.fn + 1e-9)
-
-    def map_50(self):
-        if not self.confidence_matches:
-            return 0.0
-
-        data = sorted(self.confidence_matches, key=lambda x: -x[0])
-
-        tp_cum = 0
-        fp_cum = 0
-        ap = 0.0
-        prev_recall = 0.0
-        total_gt = self.tp + self.fn
-
-        for _, is_tp in data:
-            if is_tp:
-                tp_cum += 1
-            else:
-                fp_cum += 1
-
-            precision = tp_cum / (tp_cum + fp_cum + 1e-9)
-            recall = tp_cum / (total_gt + 1e-9)
-
-            ap += precision * (recall - prev_recall)
-            prev_recall = recall
-
-        return ap
     
     def print(self):
         print("Precision:", self.precision())
         print("Recall:", self.recall())
         print("F1:", self.f1())
-        print("mAP@0.5:", self.map_50())
         print("Mean IoU:", self.mean_iou())
         print("FP rate:", self.false_positive_rate())
         print("FN rate:", self.false_negative_rate())
+
+    def plot(self, thresholds, out_path="images/threshold.png"):
+        xs, ps, rs, f1s = [], [], [], []
+
+        for t in thresholds:
+            self.conf_thr = t
+            self.validate()
+            self.print()
+            xs.append(float(t))
+            rs.append(float(self.recall()))
+            ps.append(float(self.precision()))
+            f1s.append(float(self.f1()))
+
+        Path(out_path).parent.mkdir(parents=True, exist_ok=True)
+        plt.figure()
+        plt.plot(xs, ps, label="Precision")
+        plt.plot(xs, rs, label="Recall")
+        plt.plot(xs, f1s, label="F1")
+        plt.xlabel("Confidence threshold")
+        plt.ylabel("Score")
+        plt.title("Precision / Recall / F1 vs Threshold")
+        plt.grid(True)
+        plt.legend()
+        plt.tight_layout()
+        plt.savefig(out_path, dpi=200)
+        plt.show()
