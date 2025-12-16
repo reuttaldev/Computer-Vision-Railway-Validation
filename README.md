@@ -38,6 +38,7 @@ The exact version of YOLO selected is **YOLOv8n**. It was chosen after consideri
 - few false negatives  
 
 ## Ground Truth and Comparison
+
 In RailGoerl24, annotations are provided in **XML** format. The model used for training and inference (YOLO) expects predictions as **one-line text files**. Therefore, in order to perform validation and calculate metrics, I save the predictions of my own model in **JSON** format.
 
 Validation therefore requires parsing XML annotations and JSON files to match bounding boxes.
@@ -87,37 +88,20 @@ The following results are reported at a **confidence threshold of 0.0**.
 ### Interpretation
 
 - **Precision**: When the model predicts “person”, it is correct approximately 91% of the time.
-- **Recall**: The model detects about 48% of the actual persons present in the annotated frames.
-- **Mean IoU**: When a person is detected, the predicted bounding box is spatially accurate.
+- **Recall**: The model detects about 48% of the people present.
+- **Mean IoU**: When a person is detected, the predicted bounding box is accurate.
+- **FP rate ≈ 0.088**: Only ~8.8% of predicted persons are incorrect
+- **FN rate ≈ 0.52 (high)**: The model misses approximately 52% of real persons. This is the main limitation of the current implementation
 
-#### False Positive Rate (FP)
-
-- **FP rate ≈ 0.088 (low)**
-- Only ~8.8% of predicted persons are incorrect
-- Indicates high precision
-- The model is not hallucinating detections
-
-#### False Negative Rate (FN)
-
-- **FN rate ≈ 0.52 (high)**
-- The model misses approximately 52% of real persons
-- This is the main limitation of the current implementation
-- Explains the low recall
+In this implementation, the model is considered to perform poorly for a safety-critical railway application, since missing people near railway tracks is dangerous and can be deadly. Therefore, high recall is more important than high precision.  
+Better results could be achieved by fine-tuning the model using the dataset.
 
 ### Confidence Threshold Analysis
 
 The confidence threshold directly affects the tradeoff between precision and recall.  
 Lower thresholds increase recall but also increase false positives, while higher thresholds improve precision at the cost of missing real persons.
 
-To analyze this tradeoff, I evaluated the model across multiple confidence thresholds and measured precision, recall, F1-score, and error rates.
-
-#### Confidence threshold: **0.0**
-- **Precision**: 0.9119794903666165  
-- **Recall**: 0.4771757245640227  
-- **F1**: 0.626531101942674  
-- **Mean IoU**: 0.8623903129414033  
-- **FP rate**: 0.08802050963330578  
-- **FN rate**: 0.5228242754359367  
+To visualize this I evaluated the model across multiple confidence thresholds and measured precision, recall, F1-score, and error rates.
 
 #### Confidence threshold: **0.3**
 - **Precision**: 0.9119794903666165  
@@ -143,5 +127,3 @@ The following figure illustrates **Precision, Recall, and F1-score as a function
 
 ![Precision / Recall / F1 vs Threshold](images/threshold.png)
 
-In this implementation, the model is considered to perform poorly for a safety-critical railway application, since missing people near railway tracks is dangerous and can be deadly. Therefore, high recall is more important than high precision.  
-Better results could be achieved by fine-tuning the model using the dataset.
