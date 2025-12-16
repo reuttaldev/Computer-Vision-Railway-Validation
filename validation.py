@@ -1,4 +1,5 @@
 from label_parsing import load_prediction,load_label
+import matplotlib.pyplot as plt
 
 class Validator:
     def __init__(self, iou_thr=0.5):
@@ -129,6 +130,3 @@ class Validator:
         print("Mean IoU:", self.mean_iou())
         print("FP rate:", self.false_positive_rate())
         print("FN rate:", self.false_negative_rate())
-
-    
-

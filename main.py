@@ -57,11 +57,11 @@ def run_sequence(detector,sequence_dir,show = True):
 
 
 if __name__ == "__main__":
-    #detector = PersonDetector()
-    #seq_dirs = sorted([p for p in DATA_DIR.iterdir() if p.is_dir()] )
-    #for seq_idx, seq_dir in enumerate(seq_dirs, start=1):
-    #    r = run_sequence(detector,seq_dir,False)
-    #cv2.destroyAllWindows()
-    validator = Validator(0.3)
+    detector = PersonDetector()
+    seq_dirs = sorted([p for p in DATA_DIR.iterdir() if p.is_dir()] )
+    for seq_idx, seq_dir in enumerate(seq_dirs, start=1):
+        r = run_sequence(detector,seq_dir,True)
+    cv2.destroyAllWindows()
+    validator = Validator()
     validator.validate(LABELS_DIR, PRED_DIR)
     validator.print()

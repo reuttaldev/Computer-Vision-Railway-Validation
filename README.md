@@ -107,5 +107,24 @@ What I did as a validation engineer on this project:
 - This is the biggest problem
 - Explains low recall
 
+### Threshold Analysis
+
+The confidence threshold directly affects the tradeoff between precision and recall.  
+Lower thresholds increase recall but also increase false positives, while higher thresholds improve precision at the cost of missing real persons.
+
+To analyze this tradeoff, I evaluated the model across multiple confidence thresholds and plotted precision, recall, and false negative rate as a function of the threshold.
+
+**Confidence threshold: 0.3**
+
+Precision: 0.937072715972581
+Recall: 0.49030527214338887
+F1: 0.6437701807460783
+mAP@0.5: 0.48416291632680253
+Mean IoU: 0.8496711993545345
+FP rate: 0.06292728402734128
+FN rate: 0.5096947278565704
+
+**Confidence threshold: 0.15**
+
 In this implementation, the model is considered to perform very poorly since missing people near railway tracks is dangerous and can be deadly. Therefore, high recall is more important than high precision.  
 Better results could be achieved by fine-tuning the model using the dataset.
