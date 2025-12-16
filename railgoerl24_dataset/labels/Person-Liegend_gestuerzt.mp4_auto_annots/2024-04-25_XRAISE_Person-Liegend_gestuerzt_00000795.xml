@@ -1,0 +1,30 @@
+<annotation>
+	<folder>Person-Liegend_gestürzt.mp4</folder>
+	<filename>2024-04-25_XRAISE_Person-Liegend_gestürzt_00000795.jpg</filename>
+	<path>Y:\Ilkay\20240425_XRAISE_Aufnahmen\imgs\Person-Liegend_gestürzt.mp4\2024-04-25_XRAISE_Person-Liegend_gestürzt_00000795.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1920</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<sequences/>
+	<everythingAnnotated>partial</everythingAnnotated>
+	<object>
+		<classes>
+			<name>person</name>
+		</classes>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>870</xmin>
+			<ymin>262</ymin>
+			<xmax>935</xmax>
+			<ymax>283</ymax>
+		</bndbox>
+	</object>
+</annotation>

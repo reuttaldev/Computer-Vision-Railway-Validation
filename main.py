@@ -3,8 +3,9 @@ from object_detection import PersonDetector
 import cv2
 from pathlib import Path
 from label_parsing import save_predictions_json
-
+from validation import Validator
 DATA_DIR = Path(r"railgoerl24_dataset/videos")
+LABELS_DIR = Path(r"railgoerl24_dataset/labels")
 PRED_DIR = Path(r"predictions")
 
 # processe a folder of frames (video)
@@ -23,7 +24,7 @@ def run_sequence(detector,sequence_dir,show = True):
         frame = cv2.imread(str(img_path))
         predictions = detector.detect(frame)
         if predictions:
-            save_predictions_json(PRED_DIR,sequence_dir,img_path,frame,predictions) 
+            save_predictions_json(PRED_DIR,sequence_dir,img_path,predictions) 
 
         # Filter persons
         persons = [
@@ -55,11 +56,12 @@ def run_sequence(detector,sequence_dir,show = True):
                 break
 
 
-
-
 if __name__ == "__main__":
-    detector = PersonDetector()
-    seq_dirs = sorted([p for p in DATA_DIR.iterdir() if p.is_dir()] )
-    for seq_idx, seq_dir in enumerate(seq_dirs, start=1):
-        r = run_sequence(detector,seq_dir,False)
-    cv2.destroyAllWindows()
+    #detector = PersonDetector()
+    #seq_dirs = sorted([p for p in DATA_DIR.iterdir() if p.is_dir()] )
+    #for seq_idx, seq_dir in enumerate(seq_dirs, start=1):
+    #    r = run_sequence(detector,seq_dir,False)
+    #cv2.destroyAllWindows()
+    validator = Validator(0.3)
+    validator.validate(LABELS_DIR, PRED_DIR)
+    validator.print()
